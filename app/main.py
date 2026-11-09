@@ -33,10 +33,12 @@ async def healthz() -> dict[str, str]:
 
 
 @app.get("/tasks", response_model=list[Task])
-async def list_tasks() -> list[Task]:
-    """Return all tasks currently held in memory."""
+async def list_tasks(completed: bool | None = None) -> list[Task]:
+    """Return all tasks or filter by completion status."""
 
-    return list(_tasks)
+    if completed is None:
+        return list(_tasks)
+    return [task for task in _tasks if task.completed is completed]
 
 
 @app.post("/tasks", response_model=Task, status_code=201)

@@ -20,7 +20,7 @@ Open <http://127.0.0.1:8000/docs> to try the API.
 ## Starting endpoints
 
 - `GET /healthz` — returns `{"status":"ok"}`.
-- `GET /tasks` — returns all in-memory tasks.
+- `GET /tasks` — returns all in-memory tasks; optional `completed=true` or `completed=false` filters by completion status.
 - `POST /tasks` — creates a task from `{"title":"..."}` and optional `completed` value.
 
 Tasks reset when the server restarts. There is no database, authentication, user interface, automated test suite, Copilot customization, or external tool configuration in this starter. Later course modules add capabilities when the exercise requires them.
