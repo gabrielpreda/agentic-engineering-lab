@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "python3 .github/hooks/audit_tool_use.py before",
+        "command": "python3 .github/hooks/audit_tool_use.py before",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "python3 .github/hooks/audit_tool_use.py after",
+        "command": "python3 .github/hooks/audit_tool_use.py after",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}
