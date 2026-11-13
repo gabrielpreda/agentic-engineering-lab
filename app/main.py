@@ -3,7 +3,7 @@
 from itertools import count
 
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 app = FastAPI(title="Course Task API", version="0.1.0")
 
@@ -13,6 +13,13 @@ class TaskCreate(BaseModel):
 
     title: str = Field(min_length=1, max_length=120)
     completed: bool = False
+
+    @field_validator("title")
+    @classmethod
+    def title_must_contain_non_whitespace(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("title must contain at least one non-whitespace character")
+        return value
 
 
 class Task(TaskCreate):
