@@ -44,7 +44,16 @@ def test_create_task_accepts_due_date(client):
     assert listed.json()[0]["due_date"] == "2026-11-20"
 
 
-@pytest.mark.parametrize("due_date", ["not-a-date", "2026-02-30", "2026-11-20T12:00:00"])
+@pytest.mark.parametrize(
+    "due_date",
+    [
+        "not-a-date",
+        "2026-02-30",
+        "2026-11-20T12:00:00",
+        "2026-11-20T00:00:00",
+        0,
+    ],
+)
 def test_create_task_rejects_invalid_due_date(client, due_date):
     response = client.post(
         "/tasks",
