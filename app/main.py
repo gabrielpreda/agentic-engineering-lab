@@ -66,6 +66,7 @@ async def healthz() -> dict[str, str]:
 async def list_tasks(
     completed: bool | None = None,
     due: Literal["upcoming", "overdue"] | None = None,
+    due_before: date | None = None,
 ) -> list[Task]:
     """Return all tasks or filter by completion status."""
 
@@ -92,6 +93,12 @@ async def list_tasks(
                 and task.due_date is not None
                 and task.due_date < today
             ]
+    if due_before is not None:
+        tasks = [
+            task
+            for task in tasks
+            if task.due_date is not None and task.due_date <= due_before
+        ]
     return sorted(tasks, key=lambda task: _PRIORITY_RANK[task.priority])
 
 
