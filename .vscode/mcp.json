@@ -1,5 +1,26 @@
 {
   "servers": {
+    "jira": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "JIRA_URL": "https://build-with-ai.atlassian.net",
+        "JIRA_USERNAME": "${env:JIRA_USERNAME}",
+        "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}"
+      }
+    },
+    "miro": {
+      "type": "http",
+      "url": "https://mcp.miro.com/"
+    },
+    "figma": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "figma-developer-mcp@0.13.2", "--stdio"],
+      "envFile": "${workspaceFolder}/.env"
+    },
     "github": {
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/",

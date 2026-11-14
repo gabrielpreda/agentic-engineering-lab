@@ -42,7 +42,9 @@ The optional `due` query parameter can be set to `upcoming` or `overdue`:
 - `upcoming` returns incomplete tasks due from today through seven days from today, inclusive.
 - `overdue` returns incomplete tasks due before today.
 
-Due dates use UTC to determine today. The `due` filter can be combined with `completed`; due filters always exclude completed tasks. Tasks remain ordered by priority (`high`, `medium`, `low`).
+The optional `due_before` query parameter accepts a date-only `YYYY-MM-DD` value and returns tasks due on or before that date, inclusive. Tasks without a due date are excluded, and completed tasks are included unless narrowed by another filter. Malformed dates return HTTP `422`.
+
+Due dates use UTC to determine today. The `due` filter can be combined with `completed`; due filters always exclude completed tasks. The `due_before`, `completed`, and `due` filters combine to narrow results. Tasks remain ordered by priority (`high`, `medium`, `low`).
 
 ### `POST /tasks`
 
