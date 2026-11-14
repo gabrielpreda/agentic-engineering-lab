@@ -63,4 +63,4 @@ The current draft already requires high-to-low ordering in AC-3/S-3. If approved
 | Date | Change and source | Affected criteria/tasks/evidence | Review status |
 |---|---|---|---|
 | 2026-11-13 | Added stable IDs AC-1–AC-5 to the requirements worksheet without changing criterion wording. | All source-criterion references above. | Draft; not approved |
-| 2026-11-13 | Requester/trainer proposed making the effect on `GET /tasks` ordering explicit. | AC-3/S-3 and T-3's planned ordering verification; AC-1, AC-2, AC-4, and AC-5 unchanged. | Proposed; awaiting owner approval |
+| 2026-11-13 | Requester/trainer proposed making the effect on `GET /tasks` ordering explicit. | AC-3/S-3 and T-3's planned ordering verification; AC-1, AC-2, AC-4, and AC-5 unchanged. | Completed; Approved |

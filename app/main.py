@@ -1,6 +1,7 @@
 """A small in-memory task API used in the Copilot course."""
 
 from itertools import count
+from typing import Literal
 
 from fastapi import FastAPI
 from pydantic import BaseModel, Field, field_validator
@@ -13,6 +14,7 @@ class TaskCreate(BaseModel):
 
     title: str = Field(min_length=1, max_length=120)
     completed: bool = False
+    priority: Literal["low", "medium", "high"] = "low"
 
     @field_validator("title")
     @classmethod
@@ -30,6 +32,7 @@ class Task(TaskCreate):
 
 _tasks: list[Task] = []
 _task_ids = count(1)
+_PRIORITY_RANK = {"high": 0, "medium": 1, "low": 2}
 
 
 @app.get("/healthz")
@@ -44,8 +47,10 @@ async def list_tasks(completed: bool | None = None) -> list[Task]:
     """Return all tasks or filter by completion status."""
 
     if completed is None:
-        return list(_tasks)
-    return [task for task in _tasks if task.completed is completed]
+        tasks = _tasks
+    else:
+        tasks = [task for task in _tasks if task.completed is completed]
+    return sorted(tasks, key=lambda task: _PRIORITY_RANK[task.priority])
 
 
 @app.post("/tasks", response_model=Task, status_code=201)

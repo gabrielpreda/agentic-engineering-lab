@@ -65,6 +65,6 @@ AC-5. Existing task behavior remains in place: tasks remain in memory, and the e
 
 ## Review record
 
-- **Decision:** Draft; not approved.
-- **Reviewed by:** Unassigned.
+- **Decision:** Completed; Approved.
+- **Reviewed by:** Trainer.
 - **Notes:** Requester clarification is recorded above. Update this record only after the responsible person reviews the requirements.

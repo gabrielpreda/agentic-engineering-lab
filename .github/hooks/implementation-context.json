@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "uv run --no-sync --project . python .github/hooks/load_implementation_context.py",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}
