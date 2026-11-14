@@ -18,6 +18,20 @@ class TaskCreate(BaseModel):
     priority: Literal["low", "medium", "high"] = "low"
     due_date: date | None = None
 
+    @field_validator("due_date", mode="before")
+    @classmethod
+    def due_date_must_use_iso_format(cls, value: object) -> date | None:
+        if value is None:
+            return None
+        if isinstance(value, date) and not isinstance(value, datetime):
+            return value
+        if not isinstance(value, str):
+            raise ValueError("due_date must use YYYY-MM-DD format")
+        parsed_date = date.fromisoformat(value)
+        if parsed_date.isoformat() != value:
+            raise ValueError("due_date must use YYYY-MM-DD format")
+        return parsed_date
+
     @field_validator("title")
     @classmethod
     def title_must_contain_non_whitespace(cls, value: str) -> str:
