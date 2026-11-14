@@ -1,5 +1,6 @@
 """A small in-memory task API used in the Copilot course."""
 
+from datetime import date, datetime, timedelta, timezone
 from itertools import count
 from typing import Literal
 
@@ -15,6 +16,7 @@ class TaskCreate(BaseModel):
     title: str = Field(min_length=1, max_length=120)
     completed: bool = False
     priority: Literal["low", "medium", "high"] = "low"
+    due_date: date | None = None
 
     @field_validator("title")
     @classmethod
@@ -35,6 +37,10 @@ _task_ids = count(1)
 _PRIORITY_RANK = {"high": 0, "medium": 1, "low": 2}
 
 
+def _utc_today() -> date:
+    return datetime.now(timezone.utc).date()
+
+
 @app.get("/healthz")
 async def healthz() -> dict[str, str]:
     """Report that the service is running."""
@@ -43,13 +49,35 @@ async def healthz() -> dict[str, str]:
 
 
 @app.get("/tasks", response_model=list[Task])
-async def list_tasks(completed: bool | None = None) -> list[Task]:
+async def list_tasks(
+    completed: bool | None = None,
+    due: Literal["upcoming", "overdue"] | None = None,
+) -> list[Task]:
     """Return all tasks or filter by completion status."""
 
     if completed is None:
         tasks = _tasks
     else:
         tasks = [task for task in _tasks if task.completed is completed]
+    if due is not None:
+        today = _utc_today()
+        if due == "upcoming":
+            last_upcoming_day = today + timedelta(days=7)
+            tasks = [
+                task
+                for task in tasks
+                if not task.completed
+                and task.due_date is not None
+                and today <= task.due_date <= last_upcoming_day
+            ]
+        else:
+            tasks = [
+                task
+                for task in tasks
+                if not task.completed
+                and task.due_date is not None
+                and task.due_date < today
+            ]
     return sorted(tasks, key=lambda task: _PRIORITY_RANK[task.priority])
 
 
